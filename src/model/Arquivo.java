@@ -12,6 +12,10 @@ import java.io.FileWriter;
 import java.io.IOException; 
 import java.util.ArrayList;
 import com.itextpdf.text.Document;
+import java.lang.reflect.Field;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import view.jfTelaPrincipal;
 
 public class Arquivo { 
     static final String CAMINHO = "C:\\SARPG";
@@ -51,10 +55,6 @@ public class Arquivo {
         BufferedWriter buffWrite = new BufferedWriter(new FileWriter(caminho));   
         buffWrite.append(texto); 
         buffWrite.close(); 
-    } 
-
-    public static void fun() {
-        
     }
     
 }
