@@ -5,20 +5,17 @@
  */
 package view;
 
+import controller.Personagem;
+import model.Arquivo;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import model.*;
 
-import com.itextpdf.text.*;
-import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.pdf.*;
-import java.io.FileOutputStream;
+import controller.Sistema;
 
 /**
  *
@@ -75,7 +72,6 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
 
         setTitle("Importar Personagem");
 
-        jTCaminho.setText("C:\\Users\\Ramon\\Desktop\\aramil.pdf");
         jTCaminho.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTCaminhoActionPerformed(evt);
@@ -95,8 +91,6 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
                 jBCaminhoActionPerformed(evt);
             }
         });
-
-        jTNível.setText("2");
 
         jLNivel.setText("Nível");
 
@@ -156,13 +150,14 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
             if(PDF){
                 if(jTNível.getText().equals("")){
                     JOptionPane.showMessageDialog(null, "Preencha o campo de nível", "Campo de nível vazio", JOptionPane.WARNING_MESSAGE);
+                    return;
                 }
                 else
-                    GerarPDF(personagem);
+                    personagem.GerarPDF(jTCaminho.getText(),Integer.parseInt(jTNível.getText()));
             }
             else{
                 try {
-                    Arquivo.escrever(personagem.getDados(), jTCaminho.getText());
+                    Arquivo.escrever(personagem.toString(), jTCaminho.getText());
                 } catch (IOException ex) {
                     Logger.getLogger(TelaExportarImportar.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, "Personagem não exportado", "Falha", JOptionPane.ERROR_MESSAGE );
@@ -172,16 +167,15 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Personagem exportado com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE );            
         }
         else{
-            ArrayList<Personagem> personagem = new ArrayList<>();
-            personagem = Personagem.carregar();
             try {
-                personagem.add(new Personagem(Arquivo.ler(jTCaminho.getText())));
-                Personagem.salvar(personagem);
+                System.out.println("view.TelaExportarImportar.jBConfirmarActionPerformed()"+Arquivo.ler(jTCaminho.getText()));
+                Sistema.getInstance().getPersonagem().add(new Personagem(Arquivo.ler(jTCaminho.getText())));
+                Personagem.salvar(Sistema.getInstance().getPersonagem());
             } catch (IOException ex) {
                 Logger.getLogger(TelaExportarImportar.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Personagem não importado", "Falha", JOptionPane.ERROR_MESSAGE );
             }
-            TelaCadastrarPersonagem tela = new TelaCadastrarPersonagem(personagem.get(personagem.size()-1));
+            TelaCadastrarPersonagem tela = new TelaCadastrarPersonagem(Sistema.getInstance().getPersonagem().get(Sistema.getInstance().getPersonagem().size()-1));
             this.getParent().add(tela);
             tela.setVisible(true);
             tela.setClosable(true);
@@ -202,63 +196,7 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTCaminhoActionPerformed
     
-    public void GerarPDF(Personagem p){        
-        Document doc = new Document();    
-        int i = Integer.parseInt(jTNível.getText());
-        String NomeArq = jTCaminho.getText();
-        if (!NomeArq.endsWith(".pdf")){
-              NomeArq += ".pdf"; 
-        }
-        Font f_Texto = new Font(FontFamily.HELVETICA, 12, Font.NORMAL);
-        Font f_Legenda = new Font(FontFamily.HELVETICA, 8, Font.NORMAL);
-        try{
-            PdfWriter.getInstance(doc, new FileOutputStream(NomeArq));
-            doc.open();
-            PdfPTable table = new PdfPTable(24);    
-            table.setWidthPercentage(110.0f);
-            table.addCell(Cel(p.getNome(), 12,f_Texto));            
-            table.addCell(Cel(" ", 12,f_Texto));
-            table.addCell(Cel("Nome do Personagem", 12, f_Legenda));
-            table.addCell(Cel("Nome do Jogador", 12, f_Legenda));
-            table.addCell(Cel(i+"", 12,f_Texto));
-            table.addCell(Cel(" ", 4,f_Texto));
-            table.addCell(Cel(p.getTendencia(), 4,f_Texto));
-            table.addCell(Cel("", 4,f_Texto));
-            table.addCell(Cel("Classe e Nível", 12, f_Legenda));
-            table.addCell(Cel("Raça", 4, f_Legenda));
-            table.addCell(Cel("Tendência", 4, f_Legenda));
-            table.addCell(Cel("Divindade", 4, f_Legenda));
-            table.addCell(Cel(" ", 3,f_Texto));
-            table.addCell(Cel(" ", 3,f_Texto));
-            table.addCell(Cel(" ", 3,f_Texto));
-            table.addCell(Cel(" ", 3,f_Texto));
-            table.addCell(Cel(" ", 3,f_Texto));
-            table.addCell(Cel(" ", 3,f_Texto));
-            table.addCell(Cel(" ", 3,f_Texto));
-            table.addCell(Cel(" ", 3,f_Texto));
-            table.addCell(Cel("Tamanho", 3, f_Legenda));
-            table.addCell(Cel("Idade", 3, f_Legenda));
-            table.addCell(Cel("Sexo", 3, f_Legenda));
-            table.addCell(Cel("Altura", 3, f_Legenda));
-            table.addCell(Cel("Peso", 3, f_Legenda));
-            table.addCell(Cel("Olhos", 3, f_Legenda));
-            table.addCell(Cel("Cabelo", 3, f_Legenda));
-            table.addCell(Cel("Pele", 3, f_Legenda));
-            doc.add(table);         
-        }catch(DocumentException de){
-            de.printStackTrace();
-        }catch(IOException ioe){
-            ioe.printStackTrace();
-        }finally{
-            doc.close();
-        }
-    }
     
-    public PdfPCell Cel(String texto, int coluna,Font f){
-        PdfPCell c = new PdfPCell(new Paragraph(texto,f));
-        c.setColspan(coluna);
-        return c;
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFileChooser fileChooser;

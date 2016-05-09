@@ -5,6 +5,7 @@
  */
 package view;
 
+import model.Som;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.event.ItemEvent;
@@ -12,7 +13,6 @@ import java.net.URL;
 import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import sons.*;
 /**
  *
  * @author Ramon
@@ -46,6 +46,8 @@ public class TelaSons extends javax.swing.JInternalFrame {
         jBVento = new javax.swing.JButton();
         jBPorta = new javax.swing.JButton();
 
+        setClosable(true);
+        setTitle("Sons");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

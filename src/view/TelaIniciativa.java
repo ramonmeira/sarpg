@@ -5,13 +5,16 @@
  */
 package view;
 
+import controller.Campanha;
+import controller.Personagem;
+import controller.PersonagemNaCampanha;
+import controller.Sistema;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import javax.swing.DefaultListModel;
-import model.*;
 
 /**
  *
@@ -19,17 +22,29 @@ import model.*;
  */
 public class TelaIniciativa extends javax.swing.JInternalFrame {
 
-    public List<Personagem> gPersonagens;
+    public List<PersonagemNaCampanha> gPersonagens;
     public List<Campanha> gCampanhas;
+    private int gi_campanha;
             
     public TelaIniciativa() {
         initComponents();
         
-        gCampanhas = Campanha.carregar();
+        gCampanhas = Sistema.getInstance().getCampanha();
         
-        modelo.removeAllElements();
         for (Campanha lCampanha : gCampanhas) {
             jComboBoxCampanha.addItem(lCampanha.getDescrição());
+            System.out.println("view.TelaIniciativa.<init>()"+lCampanha.getPersonagem().size());
+        }
+        gi_campanha = 0;
+        atualizaModelo();
+    }
+    
+    private void atualizaModelo(){
+        int iniciativa;
+        modelo.removeAllElements();
+        for (PersonagemNaCampanha p: gCampanhas.get(gi_campanha).getPersonagem()) {            
+            iniciativa = p.getIniciativa();
+            modelo.addElement("(" + (iniciativa<10 ? (iniciativa<0 ? "" : "0") : "") + iniciativa+ ") "+p.getPersonagem().getNome());
         }
     }
 
@@ -46,6 +61,25 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
         jButton4 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
+        setTitle("Iniciativa");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+
         jButton1.setText("Gerar Iniciativa");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -53,17 +87,30 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
             }
         });
 
+        jComboBoxCampanha.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxCampanhaItemStateChanged(evt);
+            }
+        });
+
         jListPersonagens.setModel(modelo);
+        jListPersonagens.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                jListPersonagensValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(jListPersonagens);
 
-        jButton3.setText("^");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/model/image/up.png"))); // NOI18N
+        jButton3.setPreferredSize(new java.awt.Dimension(25, 25));
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OrdenarAcima(evt);
             }
         });
 
-        jButton4.setText("v");
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/model/image/down.png"))); // NOI18N
+        jButton4.setPreferredSize(new java.awt.Dimension(25, 25));
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OrdenarAbaixo(evt);
@@ -77,44 +124,38 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBoxCampanha, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)
-                        .addContainerGap(97, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane2)
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(37, 37, 37))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBoxCampanha, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jComboBoxCampanha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1)
+                    .addComponent(jComboBoxCampanha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(31, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)
-                        .addGap(93, 93, 93))))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jComboBoxCampanha.getAccessibleContext().setAccessibleName("jComboBox1");
@@ -124,29 +165,26 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
 
     private void GerarIniciativa(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GerarIniciativa
         Random lGerador = new Random();
-        
-        Campanha lCampanha = gCampanhas.get(jComboBoxCampanha.getSelectedIndex());
-        
-        gPersonagens = new ArrayList();
-        gPersonagens.addAll(lCampanha.getPersonagem());
-                
-        for (Personagem p: gPersonagens) 
-        {
-            p.setForça((p.getDestreza()-10)/2+lGerador.nextInt(20)+1); 
-            System.out.println("view.TelaIniciativa.GerarIniciativa()"+p.getDestreza()+"  "+p.getForca());
-        }
-                
-        Collections.sort (gPersonagens, new Comparator() {
-            public int compare(Object o1, Object o2) {
-                Personagem p1 = (Personagem) o1;
-                Personagem p2 = (Personagem) o2;
-                return p1.getForca()< p2.getForca()? +1 : (p1.getForca()> p2.getForca()? -1 : (p1.getDestreza() > p2.getDestreza() ? +1 :0 ));
+        if(jComboBoxCampanha.getSelectedIndex()>-1){
+            gi_campanha = jComboBoxCampanha.getSelectedIndex();
+            Campanha lCampanha = gCampanhas.get(gi_campanha);
+
+            for (PersonagemNaCampanha p: lCampanha.getPersonagem()){
+                p.setIniciativa((p.getPersonagem().getDestreza()-10)/2+lGerador.nextInt(20)+1);                        
             }
-        });
-        
-        modelo.removeAllElements();
-        for (Personagem lP : gPersonagens) {
-            modelo.addElement("(" + (lP.getForca()<10 ? "0":"") + Integer.toString(lP.getForca())+ ") "+lP.getNome());
+            gPersonagens = lCampanha.getPersonagem();
+
+            Collections.sort (gPersonagens, new Comparator() {
+                public int compare(Object o1, Object o2) {
+                    PersonagemNaCampanha p1 = (PersonagemNaCampanha) o1;
+                    PersonagemNaCampanha p2 = (PersonagemNaCampanha) o2;
+                    int iniciativa1 = p1.getIniciativa();
+                    int iniciativa2 = p2.getIniciativa();
+                    return iniciativa1< iniciativa2? +1 : (iniciativa1> iniciativa2? -1 : (p1.getPersonagem().getDestreza() > p2.getPersonagem().getDestreza() ? +1 :0 ));
+                }
+            });
+
+            atualizaModelo();
         }
         
     }//GEN-LAST:event_GerarIniciativa
@@ -158,16 +196,14 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
         if (lIndex == 0)
             return;
         
-        Personagem tmp1 = gPersonagens.get(lIndex);
-        Personagem tmp2 = gPersonagens.get(lIndex - 1);
+        PersonagemNaCampanha tmp1 = gPersonagens.get(lIndex);
+        PersonagemNaCampanha tmp2 = gPersonagens.get(lIndex - 1);
         
         gPersonagens.set(lIndex - 1, tmp1);
         gPersonagens.set(lIndex, tmp2);
         
-        modelo.removeAllElements();
-        for (Personagem lP : gPersonagens) {
-            modelo.addElement("(" + (lP.getForca()<10 ? "0":"") + Integer.toString(lP.getForca())+ ") "+lP.getNome());
-        }
+        atualizaModelo();
+        jListPersonagens.setSelectedIndex(lIndex-1);
     }//GEN-LAST:event_OrdenarAcima
 
     private void OrdenarAbaixo(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OrdenarAbaixo
@@ -176,17 +212,29 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
         if (lIndex == gPersonagens.size() - 1)
             return;
         
-        Personagem tmp1 = gPersonagens.get(lIndex);
-        Personagem tmp2 = gPersonagens.get(lIndex + 1);
+        PersonagemNaCampanha tmp1 = gPersonagens.get(lIndex);
+        PersonagemNaCampanha tmp2 = gPersonagens.get(lIndex + 1);
         
         gPersonagens.set(lIndex + 1, tmp1);
         gPersonagens.set(lIndex, tmp2);
         
-        modelo.removeAllElements();
-        for (Personagem lP : gPersonagens) {
-             modelo.addElement("(" + (lP.getForca()<10 ? "0":"") + Integer.toString(lP.getForca())+ ") "+lP.getNome());
-        }
+        atualizaModelo();
+        
+        jListPersonagens.setSelectedIndex(lIndex+1);        
     }//GEN-LAST:event_OrdenarAbaixo
+
+    private void jListPersonagensValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_jListPersonagensValueChanged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jListPersonagensValueChanged
+
+    private void jComboBoxCampanhaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxCampanhaItemStateChanged
+        gi_campanha = jComboBoxCampanha.getSelectedIndex();
+        atualizaModelo();
+    }//GEN-LAST:event_jComboBoxCampanhaItemStateChanged
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        Campanha.salvar(Sistema.getInstance().getCampanha());
+    }//GEN-LAST:event_formInternalFrameClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

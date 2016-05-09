@@ -5,10 +5,9 @@
  */
 package view;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.*;
+import controller.Config; 
+import controller.Sistema;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -63,7 +62,12 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SARPG");
         setExtendedState(MAXIMIZED_BOTH);
-        setLocation(new java.awt.Point(300, 300));
+        setLocation(new java.awt.Point(300, 100));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                SalvarTudo(evt);
+            }
+        });
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -147,7 +151,7 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
             }
         });
 
-        jMCadastrarPersonagem.setText("Cadastrar");
+        jMCadastrarPersonagem.setText("Cadastrar Personagem");
         jMCadastrarPersonagem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMCadastrarPersonagemActionPerformed(evt);
@@ -155,7 +159,7 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
         });
         jMPersonagens.add(jMCadastrarPersonagem);
 
-        jMExportar.setText("Exportar");
+        jMExportar.setText("Exportar Personagem");
         jMExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMExportarActionPerformed(evt);
@@ -163,7 +167,7 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
         });
         jMPersonagens.add(jMExportar);
 
-        jMImportar.setText("Importar");
+        jMImportar.setText("Importar Personagem");
         jMImportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMImportarActionPerformed(evt);
@@ -217,9 +221,9 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMIniciativa);
 
-        jMenu4.setText("Sobre");
+        jMenu4.setText("Ajuda");
 
-        jMTestes.setText("Teste");
+        jMTestes.setText("Inicializar Arquivo");
         jMTestes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMTestesActionPerformed(evt);
@@ -318,7 +322,7 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMIniciativaActionPerformed
 
     private void jMTestesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMTestesActionPerformed
-        Arquivo.fun();
+        Config.inicializarArquivo();
     }//GEN-LAST:event_jMTestesActionPerformed
 
     private void jMCadastrarCampanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMCadastrarCampanhaActionPerformed
@@ -331,6 +335,10 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
         tela.setClosable(true);
         tela.setVisible(true);
     }//GEN-LAST:event_jMCadastrarDivindadeActionPerformed
+
+    private void SalvarTudo(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_SalvarTudo
+        
+    }//GEN-LAST:event_SalvarTudo
 
     /**
      * @param args the command line arguments
@@ -365,17 +373,7 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
                 new jfTelaPrincipal().setVisible(true);
             }
         });
-        
-        try {
-            Arquivo.escritor("1-2-3-4_1-1-1-1§Campanha com quatro personagens nível 1§akddkjasdh¢1-2-3-4_2-2-3-2§Campanha 2§akddkjasdh¢1-2-3-4_10-20-10-10§Campanha avançada§akddkjasdh¢1_4§Campanha com um personagem§akddkjasdh¢1-3-4_1-3-4§Campanha com 3§akddkjasdh¢", "campanha");
-            Arquivo.escritor("1§Aramil§NEUTRO_BOM§18§20§10§10§18§10¢2§Thokk Ofir§NEUTRO§20§18§10§16§8§8¢3§Felipe§CAOTICO_BOM§18§18§10§14§14§10¢4§Theodore Miranda Flores§NEUTRO_BOM§10§20§10§18§10§18¢","personagem");
-            Arquivo.escritor("Bardo§d8§NEUTRO,CAOTICO_BOM§15¢Guerreiro§d10§NEUTRO,NEUTRO_BOM§5¢Ladino§d6§CAOTICO_NEUTRO,NEUTRO§30¢","classe");
-            Arquivo.escritor("Latander§10§LUZ,CURA¢Torm§17§GUERRA,ORDEM¢BANER§16§MAL,MORTE,GUERRA¢","divindade");
-            Arquivo.escritor("Nome§escola§1§componentes§tempoDeExecução§alcance§efeito§duração§TRUE§FALSE","magia");
-            Arquivo.escritor("5","config");
-        } catch (IOException ex) {
-            Logger.getLogger(jfTelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Config.inicializaSistema();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
