@@ -11,20 +11,17 @@ import java.io.FileReader;
 import java.io.FileWriter; 
 import java.io.IOException; 
 import java.util.ArrayList;
-import com.itextpdf.text.Document;
-import java.lang.reflect.Field;
+import controller.Campanha;
+import controller.Sistema;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import view.jfTelaPrincipal;
+import controller.IObjeto;
 
 public class Arquivo { 
     static final String CAMINHO = "C:\\SARPG";
     
-    public static String leitor(String operacao) throws IOException { 
+    public static String ler(String operacao) throws IOException {     
         String caminho = CAMINHO+"\\"+operacao;
-        return ler(caminho);
-    }
-    public static String ler(String caminho) throws IOException {         
         File diretorio = new File(caminho);
         if (diretorio.exists()) {
             BufferedReader buffRead = new BufferedReader(new FileReader(caminho)); 
@@ -42,12 +39,53 @@ public class Arquivo {
         }
         return "";
     } 
-    public static void escritor(String texto, String operacao) throws IOException{
-        String caminho = CAMINHO+"\\"+operacao;
-        escrever(texto, caminho);
+    
+    public static void escrever(ArrayList<IObjeto> o) throws IOException {    
+        String caminho = CAMINHO+"\\"+o.get(0).getPasta();
+        File diretorio = new File(CAMINHO); 
+        if (!diretorio.exists()) {
+           diretorio.mkdirs(); 
+        }
+        BufferedWriter buffWrite = new BufferedWriter(new FileWriter(caminho));  
+        for(IObjeto io: o){
+            System.out.println("model.Arquivo.escrever()"+io.toString());
+            buffWrite.append(io.toString()); 
+        }
+        
+        buffWrite.close(); 
     }
     
-    public static void escrever(String texto, String caminho) throws IOException {         
+    /**
+     * Recebe um "texto" para ser escrito na "pasta" dentro do diretorio padrão
+     * @param texto
+     * @param pasta
+     * @throws IOException
+     */
+    public static void escrever(String texto, String pasta) throws IOException {    
+        String caminho = CAMINHO+"\\"+pasta;
+        exportar(texto, caminho);
+    }
+    
+    /**
+     * Exporta o "texto" para um diretorio dado por um "caminho"
+     * @param texto
+     * @param caminho
+     * @throws IOException
+     */
+    public static void exportar(String texto, String caminho) throws IOException {    
+        File diretorio = new File(CAMINHO); 
+        if (!diretorio.exists()) {
+           diretorio.mkdirs(); 
+        }
+        BufferedWriter buffWrite = new BufferedWriter(new FileWriter(caminho));          
+        System.out.println("model.Arquivo.escrever()"+texto);
+        buffWrite.append(texto); 
+        
+        buffWrite.close(); 
+    }
+    
+    public static void escreverApagando(String texto, String operacao) throws IOException {         
+        String caminho = CAMINHO+"\\"+operacao;
         File diretorio = new File(CAMINHO); 
         if (!diretorio.exists()) {
            diretorio.mkdirs(); 
@@ -55,6 +93,36 @@ public class Arquivo {
         BufferedWriter buffWrite = new BufferedWriter(new FileWriter(caminho));   
         buffWrite.append(texto); 
         buffWrite.close(); 
+    }
+    
+    public static void atualizar(ArrayList<IObjeto> o){
+        if(o == null || o.isEmpty()) return;        
+        try {
+            Arquivo.limpar(o.get(0).getPasta());
+        } catch (IOException ex) {
+            Logger.getLogger(Arquivo.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+                Arquivo.escrever(o);
+        } catch (IOException ex) {
+            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static ArrayList<IObjeto> carregarDoArquivo(Sistema.EnumObjeto ob){
+        String s = "";
+        try {
+            s = Arquivo.ler(ob.getValor());
+        } catch (IOException ex) {
+            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if(s.equals("")) return null;
+                
+        return ob.toObjeto(s);
+    }
+
+    public static void limpar(String operacao) throws IOException {
+        Arquivo.escreverApagando("", operacao);
     }
     
 }
