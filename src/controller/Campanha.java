@@ -64,7 +64,7 @@ public class Campanha implements IObjeto{
         for (int i=0; this.getPersonagem() != null && i < this.getPersonagem().size(); i++) {
             retorno += Sistema.getInstance().getPersonagem().indexOf(this.getPersonagem().get(i).getPersonagem())+"_";
             retorno += this.getPersonagem().get(i).getNivel()+"_";
-            retorno += this.getPersonagem().get(i).getIniciativa()+"_";
+            retorno += this.getPersonagem().get(i).getIniciativa()+"_";            
             for (int j=0; this.getPersonagem().get(i).getEquipamento() != null && j < this.getPersonagem().get(i).getEquipamento().size(); j++) {
                 retorno += Sistema.getInstance().getEquipamentos().indexOf(this.getPersonagem().get(i).getEquipamento().get(j));
                 if(i+1!=this.getPersonagem().size()) retorno += "-";
@@ -72,7 +72,6 @@ public class Campanha implements IObjeto{
             retorno += "&";
         }
         retorno += "§"+this.getDescrição()+"§"+this.getObservacao()+"¢";
-        System.out.println("controller.Campanha.toString()"+retorno);
         return retorno;
     }
                
@@ -95,12 +94,13 @@ public class Campanha implements IObjeto{
                     String equips[] = atributos[3].split("-");
                     equipamentos = new ArrayList<Equipamento>();
                     for(int j=0; j<equips.length; j++){
-                        if(Sistema.getInstance().getEquipamentos().size()>Integer.parseInt(equips[j]) && Integer.parseInt(equips[j])>0)
-                            equipamentos.add((Equipamento)Sistema.getInstance().getEquipamentos().get(Integer.parseInt(equips[j])-1));
+                        if(Sistema.getInstance().getEquipamentos().size()>Integer.parseInt(equips[j]))
+                            equipamentos.add((Equipamento)Sistema.getInstance().getEquipamentos().get(Integer.parseInt(equips[j])));
                         else
                             continue;
                     }
-                    personagensNaCampanha.add(new PersonagemNaCampanha((Personagem)Sistema.getInstance().getPersonagem().get(Integer.parseInt(atributos[0])-1), Integer.parseInt(atributos[1].equals("")?"0":atributos[1]), Integer.parseInt(atributos[2].equals("")?"0":atributos[2]), equipamentos));
+                    if(equipamentos.isEmpty()) equipamentos.add((Equipamento)Sistema.getInstance().getEquipamentos().get(0));
+                    personagensNaCampanha.add(new PersonagemNaCampanha((Personagem)Sistema.getInstance().getPersonagem().get(Integer.parseInt(atributos[0])), Integer.parseInt(atributos[1].equals("")?"0":atributos[1]), Integer.parseInt(atributos[2].equals("")?"0":atributos[2]), equipamentos));
                 }
             }
             c = new Campanha(personagensNaCampanha,campos[1],campos[2]);            

@@ -295,16 +295,24 @@ public class Sistema {
     }
     
     /**
-     * Cria novos arquivos, mas apaga qualquer informação que já existia
+     * Cria novos arquivos, mas apaga qualquer informação que já existia e atualiza as listas
      */
     public static void inicializarArquivo(){
         try {
-            Arquivo.escreverApagando("1_1_10_1-2-3&2_1_10_3-4&3_1_10_0&4_1_10_0§Campanha com quatro personagens nível 1§akddkjasdh¢1_2_12_1-3&2_2_12_3-4&3_2_12_0&4_2_12_0§Campanha 2§akddkjasdh¢1_10_10_1-2-3&2_10_-4_3-4&3_10_5_0&4_1__1§Campanha avançada§akddkjasdh¢1_1_10_1-2-3§Campanha com um personagem§akddkjasdh¢1_1__1-2-3&2_1__3-4&3_1__0§Campanha com 3§akddkjasdh¢", Sistema.EnumObjeto.CAMPANHA.getValor());
-            Arquivo.escreverApagando("Aramil§NEUTRO_BOM§18§20§10§10§18§10¢Thokk Ofir§NEUTRO§20§18§10§16§8§8¢Felipe§CAOTICO_BOM§18§18§10§14§14§10¢Theodore Miranda Flores§NEUTRO_BOM§10§20§10§18§10§18¢","personagem");
-            Arquivo.escreverApagando("Bardo§d8§NEUTRO,CAOTICO_BOM§15¢Guerreiro§d10§NEUTRO,NEUTRO_BOM§5¢Ladino§d6§CAOTICO_NEUTRO,NEUTRO§30¢","classe");
-            Arquivo.escreverApagando("Latander§10§LUZ,CURA¢Torm§17§GUERRA,ORDEM¢BANER§16§MAL,MORTE,GUERRA¢","divindade");
-            Arquivo.escreverApagando("Nome§escola§1§componentes§tempoDeExecução§alcance§efeito§duração§TRUE§FALSE¢","magia");
-            Arquivo.escreverApagando("Nome§1.0§1.1§descrição§1§força§1¢","equipamento");
+            Arquivo.escreverCasoNaoTenha("",Sistema.EnumObjeto.ARMA.getValor());
+            Arquivo.escreverCasoNaoTenha("",Sistema.EnumObjeto.ARMADURA.getValor());
+            Arquivo.escreverCasoNaoTenha("0_1_10_1-2-3&1_1_10_3-4&2_1_10_0&3_1_10_0§Campanha com quatro personagens nível 1§akddkjasdh¢0_2_12_1-3&1_2_12_3-4&2_2_12_0&3_2_12_0§Campanha 2§akddkjasdh¢0_10_10_1-2-3&1_10_-4_3-4&2_10_5_0&3_1__1§Campanha avançada§akddkjasdh¢0_1_10_1-2-3§Campanha com um personagem§akddkjasdh¢0_1__1-2-3&1_1__3-4&2_1__0§Campanha com 3§akddkjasdh¢", Sistema.EnumObjeto.CAMPANHA.getValor());
+            Arquivo.escreverCasoNaoTenha("Bardo§d8§NEUTRO,CAOTICO_BOM§15¢Guerreiro§d10§NEUTRO,NEUTRO_BOM§5¢Ladino§d6§CAOTICO_NEUTRO,NEUTRO§30¢",Sistema.EnumObjeto.CLASSE.getValor());
+            Arquivo.escreverCasoNaoTenha("Latander§10§LUZ,CURA¢Torm§17§GUERRA,ORDEM¢BANER§16§MAL,MORTE,GUERRA¢",Sistema.EnumObjeto.DIVINDADE.getValor());
+            Arquivo.escreverCasoNaoTenha("Poção: força do touro§1.0§1.1§descrição§4§força§1¢Corda§1.0§1.1§descrição§0§escalar§1¢Poção: agilidade do gato§1.0§1.1§descrição§4§destreza§1¢Luneta§1.0§1.1§descrição§2§observar§1¢Mochila§1.0§1.1§descrição§0§carga§1¢",Sistema.EnumObjeto.EQUIPAMENTO.getValor());
+            Arquivo.escreverCasoNaoTenha("Nome§escola§1§componentes§tempoDeExecução§alcance§efeito§duração§TRUE§FALSE¢",Sistema.EnumObjeto.MAGIA.getValor());
+            Arquivo.escreverCasoNaoTenha("",Sistema.EnumObjeto.PERICIA.getValor());
+            Arquivo.escreverCasoNaoTenha("Aramil§NEUTRO_BOM§18§20§10§10§18§10¢Thokk Ofir§NEUTRO§20§18§10§16§8§8¢Felipe§CAOTICO_BOM§18§18§10§14§14§10¢Theodore Miranda Flores§NEUTRO_BOM§10§20§10§18§10§18¢",Sistema.EnumObjeto.PERSONAGEM.getValor());
+            Arquivo.escreverCasoNaoTenha("",Sistema.EnumObjeto.RACA.getValor());
+            Arquivo.escreverCasoNaoTenha("",Sistema.EnumObjeto.TALENTO.getValor());
+            
+            Sistema.inicializaSistema();
+            
         } catch (IOException ex) {
             Logger.getLogger(Sistema.class.getName()).log(Level.SEVERE, null, ex);
         }
