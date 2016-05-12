@@ -6,10 +6,8 @@
 package view;
 
 import controller.Campanha;
-import controller.Personagem;
 import controller.PersonagemNaCampanha;
 import controller.Sistema;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -33,7 +31,6 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
         
         for (Campanha lCampanha : gCampanhas) {
             jComboBoxCampanha.addItem(lCampanha.getDescrição());
-            System.out.println("view.TelaIniciativa.<init>()"+lCampanha.getPersonagem().size());
         }
         gi_campanha = 0;
         atualizaModelo();

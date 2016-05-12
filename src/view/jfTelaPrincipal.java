@@ -384,8 +384,7 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
                 new jfTelaPrincipal().setVisible(true);
             }
         });
-        //Sistema.inicializarArquivo();
-        Sistema.inicializaSistema();
+        Sistema.inicializarArquivo();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

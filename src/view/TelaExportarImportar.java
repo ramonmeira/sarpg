@@ -43,8 +43,14 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
             
             jCBPersonagem.setVisible(true);
             personagens = Sistema.getInstance().getPersonagem();
-            for (Personagem pers : personagens) {
-                jCBPersonagem.addItem(pers.getNome());
+            
+            if(personagens != null){
+                for (Personagem pers : personagens) {
+                    jCBPersonagem.addItem(pers.getNome());
+                }            
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "Não existem personagens no sistema", "Sem personagens", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         else{
@@ -70,6 +76,7 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
         jLPersonagem = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
+        setClosable(true);
         setTitle("Importar Personagem");
 
         jTCaminho.addActionListener(new java.awt.event.ActionListener() {

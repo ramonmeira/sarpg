@@ -5,7 +5,7 @@
  */
 package view;
 
-import model.Som;
+import model.sons.Som;
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.event.ItemEvent;
