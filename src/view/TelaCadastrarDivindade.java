@@ -6,11 +6,12 @@
 package view;
 
 import java.util.ArrayList;
-import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.table.DefaultTableModel;
 import controller.Divindade;
-import controller.Dominios;
+import controller.EnumDominios;
+import controller.Sistema;
+import model.Arquivo;
 
 /**
  *
@@ -18,20 +19,21 @@ import controller.Dominios;
  */
 public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
 
-    ArrayList<Dominios> gDominios;
+    private ArrayList<EnumDominios> gDominios;
+    private ArrayList<Divindade> divindades;
     
     public TelaCadastrarDivindade() {
         initComponents();
        
         gDominios = new ArrayList();
-        for (Dominios lDominio : Dominios.values()) {
+        for (EnumDominios lDominio : EnumDominios.values()) {
             modeloEsquerdo.addElement(lDominio);
         }
         
-        ArrayList<Divindade> lDivindades = Divindade.carregar();
+        this.divindades = Sistema.getInstance().getDivindades();
         DefaultTableModel model = (DefaultTableModel)tbDivindades.getModel();
         
-        for (Divindade lDiv : lDivindades)
+        for (Divindade lDiv : divindades)
         {
             model.addRow(new Object[] {lDiv.getNome(), lDiv.getPoder(), lDiv.getDominios()});
         }
@@ -56,11 +58,11 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         modeloDireito = new DefaultListModel();
         jListDireito = new javax.swing.JList<>();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButtonEditar = new javax.swing.JButton();
-        jButtonDeletar = new javax.swing.JButton();
+        jBDireita = new javax.swing.JButton();
+        jBEsquerda = new javax.swing.JButton();
+        jBSalvar = new javax.swing.JButton();
+        jBAtualizar = new javax.swing.JButton();
+        jBDeletar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbDivindades = new javax.swing.JTable();
         jLabel4 = new javax.swing.JLabel();
@@ -83,42 +85,41 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
         jListDireito.setModel(modeloDireito);
         jScrollPane2.setViewportView(jListDireito);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/model/image/right.png"))); // NOI18N
-        jButton1.setMargin(new java.awt.Insets(5, 5, 5, 5));
-        jButton1.setPreferredSize(new java.awt.Dimension(31, 31));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jBDireita.setIcon(new javax.swing.ImageIcon(getClass().getResource("/model/image/right.png"))); // NOI18N
+        jBDireita.setMargin(new java.awt.Insets(5, 5, 5, 5));
+        jBDireita.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SelecionarActionPerformed(evt);
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/model/image/left.png"))); // NOI18N
-        jButton2.setMargin(new java.awt.Insets(5, 5, 5, 5));
-        jButton2.setPreferredSize(new java.awt.Dimension(25, 31));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jBEsquerda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/model/image/left.png"))); // NOI18N
+        jBEsquerda.setMargin(new java.awt.Insets(5, 5, 5, 5));
+        jBEsquerda.setPreferredSize(new java.awt.Dimension(25, 31));
+        jBEsquerda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NaoSelecionarActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Salvar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jBSalvar.setText("Salvar");
+        jBSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 SalvarActionPerformed(evt);
             }
         });
 
-        jButtonEditar.setText("Atualizar");
-        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+        jBAtualizar.setText("Atualizar");
+        jBAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEditarActionPerformed(evt);
+                jBAtualizarActionPerformed(evt);
             }
         });
 
-        jButtonDeletar.setText("Deletar");
-        jButtonDeletar.addActionListener(new java.awt.event.ActionListener() {
+        jBDeletar.setText("Deletar");
+        jBDeletar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDeletarActionPerformed(evt);
+                jBDeletarActionPerformed(evt);
             }
         });
 
@@ -150,15 +151,15 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jBDireita)
+                            .addComponent(jBEsquerda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButtonDeletar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonEditar)))
+                            .addComponent(jBDeletar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jBSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jBAtualizar)))
                     .addComponent(jLabel4)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
@@ -186,17 +187,17 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3)
+                        .addComponent(jBSalvar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonEditar)
+                        .addComponent(jBAtualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonDeletar))
+                        .addComponent(jBDeletar))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(32, 32, 32)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jBDireita)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jBEsquerda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -209,9 +210,9 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
       
         for (Object lDominio : jListEsquerdo.getSelectedValues()) {
             modeloDireito.addElement(lDominio);
-            gDominios.add((Dominios)lDominio);
+            gDominios.add((EnumDominios)lDominio);
         } 
-       for (Dominios lDominio : gDominios) {
+       for (EnumDominios lDominio : gDominios) {
             modeloEsquerdo.removeElement(lDominio);
        } 
     }//GEN-LAST:event_SelecionarActionPerformed
@@ -219,11 +220,11 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
     private void NaoSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NaoSelecionarActionPerformed
        for (Object lDominio : jListDireito.getSelectedValues()) {
             modeloEsquerdo.addElement(lDominio);
-            gDominios.remove((Dominios)lDominio);
+            gDominios.remove((EnumDominios)lDominio);
         }
        
        modeloDireito.removeAllElements();
-       for (Dominios lDominio : gDominios) {
+       for (EnumDominios lDominio : gDominios) {
             modeloDireito.addElement(lDominio);
        } 
     }//GEN-LAST:event_NaoSelecionarActionPerformed
@@ -234,7 +235,7 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
         
         //LIMPAR CAMPOS
         gDominios = new ArrayList();
-        for (Dominios lDominio : Dominios.values()) {
+        for (EnumDominios lDominio : EnumDominios.values()) {
             modeloEsquerdo.addElement(lDominio);
         }
         modeloDireito.removeAllElements();
@@ -242,24 +243,26 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
         jTextNivelPoder.setText("");
         
         //SALVAR
-       ArrayList<Divindade> lDivindades = new ArrayList();
-       for (int i = 0; i < model.getRowCount(); i++)
-       {
+        divindades.clear();
+        for (int i = 0; i < model.getRowCount(); i++)
+        {
            Object Nome = model.getValueAt(i, 0);
            Object Nivel = model.getValueAt(i, 1);
            Object Dominios = model.getValueAt(i, 2);
-           lDivindades.add(new Divindade(Nome.toString(), Integer.parseInt(Nivel.toString()), (ArrayList)Dominios));
-       }      
-       Divindade.salvar(lDivindades);
+           divindades.add(new Divindade(Nome.toString(), Integer.parseInt(Nivel.toString()), (ArrayList)Dominios));
+        }      
+       Sistema.salvar(Sistema.EnumObjeto.DIVINDADE);
     }//GEN-LAST:event_SalvarActionPerformed
 
-    private void jButtonDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeletarActionPerformed
+    private void jBDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeletarActionPerformed
         DefaultTableModel model = (DefaultTableModel)tbDivindades.getModel();
+        divindades.remove(tbDivindades.getSelectedRow());
         model.removeRow(tbDivindades.getSelectedRow());
+
         
         //LIMPAR CAMPOS
         gDominios = new ArrayList();
-        for (Dominios lDominio : Dominios.values()) {
+        for (EnumDominios lDominio : EnumDominios.values()) {
             modeloEsquerdo.addElement(lDominio);
         }
         modeloDireito.removeAllElements();
@@ -267,18 +270,18 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
         jTextNivelPoder.setText("");
         
         //SALVAR
-        ArrayList<Divindade> lDivindades = new ArrayList();
-       for (int i = 0; i < model.getRowCount(); i++)
-       {
+        divindades.clear();
+        for (int i = 0; i < model.getRowCount(); i++)
+        {
            Object Nome = model.getValueAt(i, 0);
            Object Nivel = model.getValueAt(i, 1);
            Object Dominios = model.getValueAt(i, 2);
-           lDivindades.add(new Divindade(Nome.toString(), Integer.parseInt(Nivel.toString()), (ArrayList)Dominios));
-       }      
-       Divindade.salvar(lDivindades);
-    }//GEN-LAST:event_jButtonDeletarActionPerformed
+           divindades.add(new Divindade(Nome.toString(), Integer.parseInt(Nivel.toString()), (ArrayList)Dominios));
+        }      
+       Sistema.salvar(Sistema.EnumObjeto.DIVINDADE);
+    }//GEN-LAST:event_jBDeletarActionPerformed
 
-    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+    private void jBAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAtualizarActionPerformed
         DefaultTableModel model = (DefaultTableModel)tbDivindades.getModel();
         model.setValueAt(jTextNome.getText(), tbDivindades.getSelectedRow(), 0);
         model.setValueAt(Integer.parseInt(jTextNivelPoder.getText()), tbDivindades.getSelectedRow(), 1);
@@ -286,7 +289,7 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
         
         //LIMPAR CAMPOS
         gDominios = new ArrayList();
-        for (Dominios lDominio : Dominios.values()) {
+        for (EnumDominios lDominio : EnumDominios.values()) {
             modeloEsquerdo.addElement(lDominio);
         }
         modeloDireito.removeAllElements();
@@ -294,16 +297,16 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
         jTextNivelPoder.setText("");
         
         //SALVAR
-        ArrayList<Divindade> lDivindades = new ArrayList();
-       for (int i = 0; i < model.getRowCount(); i++)
-       {
+        divindades.clear();
+        for (int i = 0; i < model.getRowCount(); i++)
+        {
            Object Nome = model.getValueAt(i, 0);
            Object Nivel = model.getValueAt(i, 1);
            Object Dominios = model.getValueAt(i, 2);
-           lDivindades.add(new Divindade(Nome.toString(), Integer.parseInt(Nivel.toString()), (ArrayList)Dominios));
-       }      
-       Divindade.salvar(lDivindades);
-    }//GEN-LAST:event_jButtonEditarActionPerformed
+           divindades.add(new Divindade(Nome.toString(), Integer.parseInt(Nivel.toString()), (ArrayList)Dominios));
+        }      
+        Sistema.salvar(Sistema.EnumObjeto.DIVINDADE);
+    }//GEN-LAST:event_jBAtualizarActionPerformed
 
     private void tbDivindadesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbDivindadesMouseClicked
         DefaultTableModel model = (DefaultTableModel)tbDivindades.getModel();
@@ -316,9 +319,9 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
         for (Object ld : (ArrayList)lDominios)
         {
             modeloDireito.addElement(ld);
-            gDominios.add((Dominios)ld);
+            gDominios.add((EnumDominios)ld);
         }
-        for (Dominios lDominio : gDominios) {
+        for (EnumDominios lDominio : gDominios) {
             modeloEsquerdo.removeElement(lDominio);
        }      
     }//GEN-LAST:event_tbDivindadesMouseClicked
@@ -329,11 +332,11 @@ public class TelaCadastrarDivindade extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButtonDeletar;
-    private javax.swing.JButton jButtonEditar;
+    private javax.swing.JButton jBAtualizar;
+    private javax.swing.JButton jBDeletar;
+    private javax.swing.JButton jBDireita;
+    private javax.swing.JButton jBEsquerda;
+    private javax.swing.JButton jBSalvar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

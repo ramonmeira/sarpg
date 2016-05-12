@@ -24,8 +24,8 @@ import java.util.logging.Logger;
  * @author Ramon
  */
 
-public class Personagem{ 
-
+public class Personagem implements IObjeto{
+    public static final String PASTA = "personagem"; 
     private String nome;
     private String tendencia;
     private int forca;
@@ -58,18 +58,6 @@ public class Personagem{
 
     public Personagem() {
         
-    }
-
-    public Personagem(String ler) {
-        String p[] = ler.split("¢")[0].split("§");
-        nome = p[0];
-        tendencia = p[1];
-        forca = Integer.parseInt(p[2]);
-        destreza = Integer.parseInt(p[3]);
-        contituicao = Integer.parseInt(p[4]);
-        inteligencia = Integer.parseInt(p[5]);
-        sabedoria = Integer.parseInt(p[6]);
-        carisma = Integer.parseInt(p[7]);
     }
 
     public String getNome() {
@@ -144,28 +132,29 @@ public class Personagem{
         this.id = id;
     }       
     
-    public static void salvar(ArrayList<Personagem> p){
-        String pers = "";
-        for (Personagem p1 : p) {
-            pers += p1.toString();
-        }
-        try {
-            Arquivo.escritor(pers, "personagem");
-        } catch (IOException ex) {
-            Logger.getLogger(Personagem.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    } 
+    public String getPasta() {
+        return PASTA;
+    }
     
-    public static ArrayList<Personagem> carregar(){
-        String personagens = "";
+    @Override
+    public String toString(){
+        String retorno = "";
+        retorno +=  nome+"§"+
+                    tendencia+"§"+
+                    forca+"§"+
+                    destreza+"§"+
+                    contituicao+"§"+
+                    inteligencia+"§"+
+                    sabedoria+"§"+
+                    carisma+"¢";
+        return retorno;
+    }
+           
+    public static ArrayList<Personagem> toObjeto(String as_personagem){
         ArrayList<Personagem> todos = new ArrayList<>();        
-        try {
-            personagens = Arquivo.leitor("personagem");
-        } catch (IOException ex) {
-            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(!personagens.equals("")){
-            String linhas[] = personagens.split("¢");
+        
+        if(!as_personagem.equals("")){
+            String linhas[] = as_personagem.split("¢");
             for(int i=0; i<linhas.length; i++){
                 String partes[] = linhas[i].split("§");                
                 Personagem p = new Personagem(
@@ -183,20 +172,6 @@ public class Personagem{
         return todos;
     }
         
-    @Override
-    public String toString(){
-        String retorno = "";
-        retorno +=  nome+"§"+
-                    tendencia+"§"+
-                    forca+"§"+
-                    destreza+"§"+
-                    contituicao+"§"+
-                    inteligencia+"§"+
-                    sabedoria+"§"+
-                    carisma+"¢";
-        return retorno;
-    }
-    
     public void GerarPDF(String NomeArq, int nivel){        
         Document doc = new Document();    
         if (!NomeArq.endsWith(".pdf")){
@@ -251,5 +226,5 @@ public class Personagem{
         PdfPCell c = new PdfPCell(new Paragraph(texto,f));
         c.setColspan(coluna);
         return c;
-    }
+    }    
 }

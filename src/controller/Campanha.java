@@ -4,16 +4,15 @@
  * and open the template in the editor.
  */
 package controller;
-import model.Arquivo;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 /**
  *
  * @author Ramon
  */
-public class Campanha{
+public class Campanha implements IObjeto{
+    public static final String PASTA = "campanha";
     private ArrayList<PersonagemNaCampanha> personagem;
     private String descrição;
     private String observações;
@@ -54,6 +53,11 @@ public class Campanha{
         this.observações = observações;
     }
     
+    public String getPasta() {
+        return PASTA;
+    }    
+    
+    @Override
     public String toString(){
         String retorno = "";
         
@@ -65,59 +69,40 @@ public class Campanha{
                 retorno += Sistema.getInstance().getEquipamentos().indexOf(this.getPersonagem().get(i).getEquipamento().get(j));
                 if(i+1!=this.getPersonagem().size()) retorno += "-";
             }
+            retorno += "&";
         }
         retorno += "§"+this.getDescrição()+"§"+this.getObservacao()+"¢";
-        
+        System.out.println("controller.Campanha.toString()"+retorno);
         return retorno;
     }
-    
-    public static void salvar(ArrayList<Campanha> c){
-        String retorno = "";
-        if(c.isEmpty()) return;
-        for (Campanha c1 : c) {
-            retorno += c1.toString();
-        }
-        try {
-            Arquivo.escritor(retorno, "campanha");
-        } catch (IOException ex) {
-            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-        
-    public static ArrayList<Campanha> carregar(){
-        String campanhas = "";
+               
+    public static ArrayList<Campanha> toObjeto(String as_campanhas){        
         ArrayList<Campanha> camp = new ArrayList<>();
         ArrayList<PersonagemNaCampanha> personagensNaCampanha;
         ArrayList<Equipamento> equipamentos;
         Campanha c;
         
-        try {
-            campanhas = Arquivo.leitor("campanha");
-        } catch (IOException ex) {
-            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(campanhas.equals("")) return camp;
+        if(as_campanhas.equals("")) return camp;
         
-        String linhas[] = campanhas.split("¢");        
-        for(int i=0; i< linhas.length;i++){            
-            String campos[] = linhas[i].split("§");            
+        String linhas[] = as_campanhas.split("¢");        
+        for (String linha : linhas) {
+            String[] campos = linha.split("§");            
             String personagens[] = campos[0].split("&");
             personagensNaCampanha = new ArrayList<>();            
             for(int k=0; k<personagens.length; k++){
                 if(!personagens[k].equals("")){
                     String atributos[] = personagens[k].split("_");
-                    System.out.println("controller.Campanha.carregar()"+personagens[k]);
                     String equips[] = atributos[3].split("-");
                     equipamentos = new ArrayList<Equipamento>();
                     for(int j=0; j<equips.length; j++){
-                        if(Sistema.getInstance().getEquipamentos().size()>Integer.parseInt(equips[j]))
-                            equipamentos.add(Sistema.getInstance().getEquipamentos().get(Integer.parseInt(equips[j])));
+                        if(Sistema.getInstance().getEquipamentos().size()>Integer.parseInt(equips[j]) && Integer.parseInt(equips[j])>0)
+                            equipamentos.add((Equipamento)Sistema.getInstance().getEquipamentos().get(Integer.parseInt(equips[j])-1));
                         else
                             continue;
                     }
-                    personagensNaCampanha.add(new PersonagemNaCampanha(Sistema.getInstance().getPersonagem().get(Integer.parseInt(atributos[0])-1), Integer.parseInt(atributos[1].equals("")?"0":atributos[1]), Integer.parseInt(atributos[2].equals("")?"0":atributos[2]), equipamentos));
+                    personagensNaCampanha.add(new PersonagemNaCampanha((Personagem)Sistema.getInstance().getPersonagem().get(Integer.parseInt(atributos[0])-1), Integer.parseInt(atributos[1].equals("")?"0":atributos[1]), Integer.parseInt(atributos[2].equals("")?"0":atributos[2]), equipamentos));
                 }
-            }           
+            }
             c = new Campanha(personagensNaCampanha,campos[1],campos[2]);            
             camp.add(c);
         }

@@ -5,22 +5,19 @@
  */
 package controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Arquivo;
 
 /**
  *
  * @author Ramon
  */
-class Equipamento extends Item{
+class Equipamento extends Item implements IObjeto{
+    public static final String PASTA = "equipamento";
     public int bonus;
     public String tipoBonus;
     public int Quantidade;
 
-    public Equipamento(String nome, String descricao, double custo, double peso, int Quantidade, int bônus, String tipoBonus) {
+    public Equipamento(String nome, double custo, double peso, String descricao, int bônus, String tipoBonus, int Quantidade) {
         super(nome, custo, peso, descricao);
         this.bonus = bônus;
         this.tipoBonus = tipoBonus;
@@ -58,44 +55,32 @@ class Equipamento extends Item{
         this.Quantidade = Quantidade;
     }
     
+    public String getPasta() {
+        return PASTA;
+    }
+    
+    @Override
     public String toString(){
         String retorno = "";
-        retorno += this.getNome()+"§";
-        retorno += this.getDescricao()+"§";
+        retorno += this.getNome()+"§";        
         retorno += this.getCusto()+"§";
         retorno += this.getPeso()+"§";
-        retorno += this.getQuantidade()+"§";
+        retorno += this.getDescricao()+"§";        
         retorno += this.getBonus()+"§";
-        retorno += this.getTipoBonus()+"¢";
+        retorno += this.getTipoBonus()+"§";        
+        retorno += this.getQuantidade()+"¢";
         return retorno;
-    }
+    }    
     
-    public static void salvar(ArrayList<Equipamento> e){
-        String retorno = "";
-        if(e.isEmpty()) return;
-        for (Equipamento e1 : e) {      
-            retorno += e1.toString();
-        }
-        try {
-            Arquivo.escritor(retorno, "equipamento");
-        } catch (IOException ex) {
-            Logger.getLogger(Equipamento.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public static ArrayList<Equipamento> carregar(){
-        String ls_ = "";
-        ArrayList<Equipamento> equipamentos = new ArrayList<>();
-        try {
-            ls_ = Arquivo.leitor("equipamento");
-        } catch (IOException ex) {
-            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(ls_.equals("")) return null;
-        String linhas[] = ls_.split("¢");        
-        for(int i=0; i< linhas.length;i++){            
-            String partes[] = linhas[i].split("§");   
-            equipamentos.add(new Equipamento(partes[0], partes[1], Double.parseDouble(partes[2]), Double.parseDouble(partes[3]), Integer.parseInt(partes[4]), Integer.parseInt(partes[5]), partes[6]));
+    public static ArrayList toObjeto(String as_equipamentos){
+        ArrayList equipamentos = new ArrayList<>();
+        
+        if(as_equipamentos.equals("")) return equipamentos;
+        
+        String linhas[] = as_equipamentos.split("¢");        
+        for (String linha1 : linhas) {
+            String[] linha = linha1.split("§");
+            equipamentos.add(new Equipamento(linha[0], Double.parseDouble(linha[1]), Double.parseDouble(linha[2]), linha[3], Integer.parseInt(linha[4]), linha[5], Integer.parseInt(linha[6])));
         }
         return equipamentos;
     }

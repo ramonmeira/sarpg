@@ -229,8 +229,16 @@ public class TelaCadastrarPersonagem extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Sistema.getInstance().getPersonagem().add(new Personagem(jTFNome.getText(), jTFTendencia.getText(), Integer.parseInt(jTFForca.getText().equals("")?"0":jTFForca.getText()), Integer.parseInt(jTFDestreza.getText().equals("")?"0":jTFDestreza.getText()), Integer.parseInt(jTFConstituicao.getText().equals("")?"0":jTFConstituicao.getText()), Integer.parseInt(jTFInteligencia.getText().equals("")?"0":jTFInteligencia.getText()), Integer.parseInt(jTFSabedoria.getText().equals("")?"0":jTFSabedoria.getText()), Integer.parseInt(jTFCarisma.getText().equals("")?"0":jTFCarisma.getText())));
-        Personagem.salvar(Sistema.getInstance().getPersonagem());
+        Sistema.getInstance().getPersonagem().add(new Personagem(
+                                                                    jTFNome.getText().equals("")?" ":jTFNome.getText(), 
+                                                                    jTFTendencia.getText().equals("")?" ":jTFTendencia.getText(), 
+                                                                    Integer.parseInt(jTFForca.getText().equals("")?"0":jTFForca.getText()), 
+                                                                    Integer.parseInt(jTFDestreza.getText().equals("")?"0":jTFDestreza.getText()), 
+                                                                    Integer.parseInt(jTFConstituicao.getText().equals("")?"0":jTFConstituicao.getText()), 
+                                                                    Integer.parseInt(jTFInteligencia.getText().equals("")?"0":jTFInteligencia.getText()), 
+                                                                    Integer.parseInt(jTFSabedoria.getText().equals("")?"0":jTFSabedoria.getText()), 
+                                                                    Integer.parseInt(jTFCarisma.getText().equals("")?"0":jTFCarisma.getText())));
+        Sistema.salvar(Sistema.EnumObjeto.PERSONAGEM);
         JOptionPane.showMessageDialog(null, "Personagem salvo com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButton2ActionPerformed
 

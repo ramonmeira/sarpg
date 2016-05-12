@@ -5,23 +5,20 @@
  */
 package controller;
 
-import model.Arquivo;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Ramon
  */
-public class Classe{
+public class Classe implements IObjeto{
+    public static final String PASTA = "classe";
     private String nome;
     private String dadoDeVida;
-    private ArrayList<TipoTendencias> tendência;
+    private ArrayList<EnumTendencias> tendência;
     private int pontosDePericias;
 
-    public Classe(String nome, String dadoDeVida, ArrayList<TipoTendencias> tendência, int pontosDePericias) {
+    public Classe(String nome, String dadoDeVida, ArrayList<EnumTendencias> tendência, int pontosDePericias) {
         this.nome = nome;
         this.dadoDeVida = dadoDeVida;
         this.tendência = tendência;
@@ -47,11 +44,11 @@ public class Classe{
         this.dadoDeVida = dadoDeVida;
     }
 
-    public ArrayList<TipoTendencias> getTendência() {
+    public ArrayList<EnumTendencias> getTendência() {
         return tendência;
     }
 
-    public void setTendência(ArrayList<TipoTendencias> tendência) {
+    public void setTendência(ArrayList<EnumTendencias> tendência) {
         this.tendência = tendência;
     }
 
@@ -61,6 +58,10 @@ public class Classe{
 
     public void setPontosDePericias(int pontosDePericias) {
         this.pontosDePericias = pontosDePericias;
+    }
+    
+    public String getPasta() {
+        return PASTA;
     }
     
     @Override
@@ -75,39 +76,21 @@ public class Classe{
         return retorno;
     }
     
-    public static ArrayList<Classe> carregar(){
-        String ls_classe = "";
+    public static ArrayList<Classe> toObjeto(String ls_classe){
         ArrayList<Classe> lCl_classe = new ArrayList<>();
-        ArrayList<TipoTendencias> tt;
-        try {
-            ls_classe = Arquivo.leitor("classe");
-        } catch (IOException ex) {
-            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        ArrayList<EnumTendencias> tt;
         if(ls_classe.equals("")) return null;
         String linhas[] = ls_classe.split("¢");        
-        for(int i=0; i< linhas.length;i++){
-            String atributos[] = linhas[i].split("§");   
+        for (String linha : linhas) {
+            String[] atributos = linha.split("§");   
             String dom[] = atributos[2].split(",");
             tt = new ArrayList<>();
-            for(int j=0; j<dom.length; j++)
-                tt.add(TipoTendencias.toTipo(dom[j]));
+            for (String dom1 : dom) {
+                tt.add(EnumTendencias.toTipo(dom1));
+            }
             lCl_classe.add(new Classe(atributos[0], atributos[1], tt, Integer.parseInt(atributos[3])));
         }
         return lCl_classe;
-    }
-    
-    public static void salvar(ArrayList<Classe> c){
-        String retorno = "";
-        if(c.isEmpty()) return;
-        for (Classe c1 : c) {      
-            retorno += c1.toString();
-        }
-        try {
-            Arquivo.escritor(retorno, "classe");
-        } catch (IOException ex) {
-            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
     
 }

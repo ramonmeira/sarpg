@@ -5,17 +5,15 @@
  */
 package controller;
 
-import model.Arquivo;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Ramon
  */
-public class Magia{
+public class Magia implements IObjeto{
+    public static final String PASTA = "magia";
+
     private String Nome;
     private String escola;
     private int nivel;
@@ -123,6 +121,11 @@ public class Magia{
         this.resistenciaMagia = resistenciaMagia;
     }
     
+    public String getPasta() {
+        return PASTA;
+    }
+    
+    @Override
     public String toString(){
         String retorno = "";
         retorno +=  this.Nome+"§"+
@@ -136,31 +139,13 @@ public class Magia{
                     this.testeDeResistência+"§"+
                     this.resistenciaMagia+"¢";
         return retorno;
-    }
-    
-    public static void salvar(ArrayList<Magia> m){
-        String magic = "";
-        for (Magia m1 : m) {
-            magic +=    m1.toString();
-        }
-        try {
-            Arquivo.escritor(magic, "magia");
-        } catch (IOException ex) {
-            Logger.getLogger(Magia.class.getName()).log(Level.SEVERE, null, ex);
-        }
     } 
     
-    public static ArrayList<Magia> carregar(){
-        String magias = "";
+    public static ArrayList<Magia> toObjeto(String as_magia){
         ArrayList<Magia> todos = new ArrayList<>();
         
-        try {
-            magias = Arquivo.leitor("magia");
-        } catch (IOException ex) {
-            Logger.getLogger(Campanha.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(!magias.equals("")){
-            String linhas[] = magias.split("¢");
+        if(!as_magia.equals("")){
+            String linhas[] = as_magia.split("¢");
             for(int i=0; i<linhas.length; i++){
                 String partes[] = linhas[i].split("§");                
                 Magia m = new Magia(

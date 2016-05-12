@@ -5,9 +5,7 @@
  */
 package view;
 
-import controller.Config; 
 import controller.Sistema;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -57,6 +55,7 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
         jMSIniciativa = new javax.swing.JMenuItem();
         jMSons = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
+        jMInicializarArquivo = new javax.swing.JMenuItem();
         jMTestes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -223,7 +222,15 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
 
         jMenu4.setText("Ajuda");
 
-        jMTestes.setText("Inicializar Arquivo");
+        jMInicializarArquivo.setText("Inicializar Arquivo");
+        jMInicializarArquivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMInicializarArquivoActionPerformed(evt);
+            }
+        });
+        jMenu4.add(jMInicializarArquivo);
+
+        jMTestes.setText("Testes");
         jMTestes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMTestesActionPerformed(evt);
@@ -321,9 +328,9 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
         tela.setVisible(true);
     }//GEN-LAST:event_jMIniciativaActionPerformed
 
-    private void jMTestesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMTestesActionPerformed
-        Config.inicializarArquivo();
-    }//GEN-LAST:event_jMTestesActionPerformed
+    private void jMInicializarArquivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMInicializarArquivoActionPerformed
+        Sistema.inicializarArquivo();
+    }//GEN-LAST:event_jMInicializarArquivoActionPerformed
 
     private void jMCadastrarCampanhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMCadastrarCampanhaActionPerformed
         // TODO add your handling code here:
@@ -337,8 +344,12 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMCadastrarDivindadeActionPerformed
 
     private void SalvarTudo(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_SalvarTudo
-        
+        Sistema.salvarTudo();
     }//GEN-LAST:event_SalvarTudo
+
+    private void jMTestesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMTestesActionPerformed
+        Sistema.teste();
+    }//GEN-LAST:event_jMTestesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -373,7 +384,8 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
                 new jfTelaPrincipal().setVisible(true);
             }
         });
-        Config.inicializaSistema();
+        //Sistema.inicializarArquivo();
+        Sistema.inicializaSistema();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -390,6 +402,7 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMExportar;
     private javax.swing.JMenuItem jMGerarPDF;
     private javax.swing.JMenuItem jMImportar;
+    private javax.swing.JMenuItem jMInicializarArquivo;
     private javax.swing.JMenu jMIniciativa;
     private javax.swing.JMenu jMPersonagens;
     private javax.swing.JMenuItem jMSIniciativa;

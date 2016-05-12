@@ -233,7 +233,7 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jComboBoxCampanhaItemStateChanged
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
-        Campanha.salvar(Sistema.getInstance().getCampanha());
+        Sistema.salvar(Sistema.EnumObjeto.CAMPANHA);
     }//GEN-LAST:event_formInternalFrameClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -42,7 +42,7 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
             }
             
             jCBPersonagem.setVisible(true);
-            personagens = Personagem.carregar();
+            personagens = Sistema.getInstance().getPersonagem();
             for (Personagem pers : personagens) {
                 jCBPersonagem.addItem(pers.getNome());
             }
@@ -157,7 +157,7 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
             }
             else{
                 try {
-                    Arquivo.escrever(personagem.toString(), jTCaminho.getText());
+                    Arquivo.exportar(personagem.toString(), jTCaminho.getText());
                 } catch (IOException ex) {
                     Logger.getLogger(TelaExportarImportar.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(null, "Personagem não exportado", "Falha", JOptionPane.ERROR_MESSAGE );
@@ -169,13 +169,13 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
         else{
             try {
                 System.out.println("view.TelaExportarImportar.jBConfirmarActionPerformed()"+Arquivo.ler(jTCaminho.getText()));
-                Sistema.getInstance().getPersonagem().add(new Personagem(Arquivo.ler(jTCaminho.getText())));
-                Personagem.salvar(Sistema.getInstance().getPersonagem());
+                Sistema.getInstance().getPersonagem().addAll(Personagem.toObjeto(Arquivo.ler(jTCaminho.getText())));
+                Sistema.salvar(Sistema.EnumObjeto.PERSONAGEM);
             } catch (IOException ex) {
                 Logger.getLogger(TelaExportarImportar.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Personagem não importado", "Falha", JOptionPane.ERROR_MESSAGE );
             }
-            TelaCadastrarPersonagem tela = new TelaCadastrarPersonagem(Sistema.getInstance().getPersonagem().get(Sistema.getInstance().getPersonagem().size()-1));
+            TelaCadastrarPersonagem tela = new TelaCadastrarPersonagem((Personagem)Sistema.getInstance().getPersonagem().get(Sistema.getInstance().getPersonagem().size()-1));
             this.getParent().add(tela);
             tela.setVisible(true);
             tela.setClosable(true);

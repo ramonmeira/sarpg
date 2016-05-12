@@ -152,9 +152,17 @@
             <Property name="text" type="java.lang.String" value="Ajuda"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMTestes">
+            <MenuItem class="javax.swing.JMenuItem" name="jMInicializarArquivo">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Inicializar Arquivo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMInicializarArquivoActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMTestes">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Testes"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMTestesActionPerformed"/>
