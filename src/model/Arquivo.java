@@ -48,7 +48,6 @@ public class Arquivo {
         }
         BufferedWriter buffWrite = new BufferedWriter(new FileWriter(caminho));  
         for(IObjeto io: o){
-            System.out.println("model.Arquivo.escrever()"+io.toString());
             buffWrite.append(io.toString()); 
         }
         
@@ -77,12 +76,18 @@ public class Arquivo {
         if (!diretorio.exists()) {
            diretorio.mkdirs(); 
         }
-        BufferedWriter buffWrite = new BufferedWriter(new FileWriter(caminho));          
-        System.out.println("model.Arquivo.escrever()"+texto);
+        BufferedWriter buffWrite = new BufferedWriter(new FileWriter(caminho));   
         buffWrite.append(texto); 
         
         buffWrite.close(); 
     }
+    
+    public static void escreverCasoNaoTenha(String texto, String operacao) throws IOException {   
+        if(ler(operacao).equals("")) 
+            escreverApagando(texto, operacao);
+        else
+            return;
+    }      
     
     public static void escreverApagando(String texto, String operacao) throws IOException {         
         String caminho = CAMINHO+"\\"+operacao;
