@@ -60,7 +60,7 @@ public class Arquivo {
      * @param pasta
      * @throws IOException
      */
-    public static void escrever(String texto, String pasta) throws IOException {    
+    public static void escrever(String pasta, String texto) throws IOException {    
         String caminho = CAMINHO+"\\"+pasta;
         exportar(texto, caminho);
     }
