@@ -67,12 +67,12 @@ public class Classe implements IObjeto{
     @Override
     public String toString(){
         String retorno = "";
-        retorno += this.getNome()+"§";
+        retorno += this.getNome()+"§"+this.getDadoDeVida()+"§";
             for(int i=0; i<this.getTendência().size(); i++){
                 retorno+= this.getTendência().get(i).name();
                 if(i!=this.getTendência().size()-1) retorno += ",";
             }
-            retorno +="§"+this.getDadoDeVida()+"§"+this.getPontosDePericias()+"¢";
+            retorno +="§"+this.getPontosDePericias()+"¢";
         return retorno;
     }
     
