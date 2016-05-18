@@ -175,8 +175,9 @@ public class TelaExportarImportar extends javax.swing.JInternalFrame {
         }
         else{
             try {
-                System.out.println("view.TelaExportarImportar.jBConfirmarActionPerformed()"+Arquivo.ler(jTCaminho.getText()));
-                Sistema.getInstance().getPersonagem().addAll(Personagem.toObjeto(Arquivo.ler(jTCaminho.getText())));
+                
+                System.out.println("view.TelaExportarImportar.jBConfirmarActionPerformed()"+jTCaminho.getText()+"  "+Arquivo.lerCaminho(jTCaminho.getText()));
+                Sistema.getInstance().getPersonagem().addAll(Personagem.toObjeto(Arquivo.lerCaminho(jTCaminho.getText())));
                 Sistema.salvar(Sistema.EnumObjeto.PERSONAGEM);
             } catch (IOException ex) {
                 Logger.getLogger(TelaExportarImportar.class.getName()).log(Level.SEVERE, null, ex);

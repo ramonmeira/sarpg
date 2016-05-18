@@ -22,6 +22,9 @@ public class Arquivo {
     
     public static String ler(String operacao) throws IOException {     
         String caminho = CAMINHO+"\\"+operacao;
+        return lerCaminho(caminho);
+    }
+    public static String lerCaminho(String caminho) throws IOException {             
         File diretorio = new File(caminho);
         if (diretorio.exists()) {
             BufferedReader buffRead = new BufferedReader(new FileReader(caminho)); 
@@ -60,7 +63,7 @@ public class Arquivo {
      * @param pasta
      * @throws IOException
      */
-    public static void escrever(String texto, String pasta) throws IOException {    
+    public static void escrever(String pasta, String texto) throws IOException {    
         String caminho = CAMINHO+"\\"+pasta;
         exportar(texto, caminho);
     }

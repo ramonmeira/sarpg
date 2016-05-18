@@ -39,7 +39,8 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
     private void atualizaModelo(){
         int iniciativa;
         modelo.removeAllElements();
-        for (PersonagemNaCampanha p: gCampanhas.get(gi_campanha).getPersonagem()) {            
+        gPersonagens = gCampanhas.get(gi_campanha).getPersonagem();
+        for (PersonagemNaCampanha p: gPersonagens) {            
             iniciativa = p.getIniciativa();
             modelo.addElement("(" + (iniciativa<10 ? (iniciativa<0 ? "" : "0") : "") + iniciativa+ ") "+p.getPersonagem().getNome());
         }
@@ -192,7 +193,7 @@ public class TelaIniciativa extends javax.swing.JInternalFrame {
         
         if (lIndex == 0)
             return;
-        
+        System.out.println("view.TelaIniciativa.OrdenarAcima()"+lIndex);
         PersonagemNaCampanha tmp1 = gPersonagens.get(lIndex);
         PersonagemNaCampanha tmp2 = gPersonagens.get(lIndex - 1);
         
