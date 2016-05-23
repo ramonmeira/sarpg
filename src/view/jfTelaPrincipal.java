@@ -131,6 +131,11 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
         jMSistema.add(jMCadastrarPericia);
 
         jMCadastrarRaça.setText("Cadastrar Raça");
+        jMCadastrarRaça.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMCadastrarRaçaActionPerformed(evt);
+            }
+        });
         jMSistema.add(jMCadastrarRaça);
 
         jMCadastrarTalento.setText("Cadastrar Talento");
@@ -267,9 +272,20 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
         tela.setVisible(true);
     }//GEN-LAST:event_jMCadastrarMagiaActionPerformed
 
+    private void jMCadastrarRaçaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMCadastrarMagiaActionPerformed
+        TelaCadastrarRaca tela = new TelaCadastrarRaca();
+        jDesktopPane1.add(tela);
+        tela.setClosable(true);
+        tela.setVisible(true);
+    }//GEN-LAST:event_jMCadastrarMagiaActionPerformed
+
     private void jMenuCadastrarClasseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCadastrarClasseActionPerformed
-        // TODO add your handling code here:
+        TelaCadastrarClasse tela = new TelaCadastrarClasse();
+        jDesktopPane1.add(tela);
+        tela.setClosable(true);
+        tela.setVisible(true);
     }//GEN-LAST:event_jMenuCadastrarClasseActionPerformed
+
 
     private void jMGerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMGerarPDFActionPerformed
         TelaExportarImportar tela = new TelaExportarImportar(true,true);

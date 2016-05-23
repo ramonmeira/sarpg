@@ -17,10 +17,11 @@ public interface IObjeto {
     public String getPasta();
         
     @Override
-    public String toString();  
-    
-    public static ArrayList<IObjeto> toObjeto(String s){
-        return null;
-    }
-    
+    public String toString();
+
+//    nao permitido em java 1.7
+//    public static ArrayList<IObjeto> toObjeto(String s){
+//        return null;
+//    }
+
 }
