@@ -280,8 +280,12 @@ public class jfTelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMCadastrarMagiaActionPerformed
 
     private void jMenuCadastrarClasseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuCadastrarClasseActionPerformed
-        // TODO add your handling code here:
+        TelaCadastrarClasse tela = new TelaCadastrarClasse();
+        jDesktopPane1.add(tela);
+        tela.setClosable(true);
+        tela.setVisible(true);
     }//GEN-LAST:event_jMenuCadastrarClasseActionPerformed
+
 
     private void jMGerarPDFActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMGerarPDFActionPerformed
         TelaExportarImportar tela = new TelaExportarImportar(true,true);
