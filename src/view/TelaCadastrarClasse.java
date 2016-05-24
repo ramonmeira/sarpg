@@ -15,6 +15,8 @@ import model.Arquivo;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -27,7 +29,12 @@ private ArrayList<Classe> classes;
 
 public TelaCadastrarClasse() {
     initComponents();
-
+    
+    gTendencias = new ArrayList();
+    for (EnumTendencias lTendencia : EnumTendencias.values()) {
+        modeloEsquerdo.addElement(lTendencia);
+    }
+    
     this.classes = Sistema.getInstance().getClasse();
     DefaultTableModel model = (DefaultTableModel)tbClasses.getModel();
 
@@ -49,7 +56,7 @@ private void initComponents() {
     jLabel2 = new javax.swing.JLabel();
     jTextNome = new javax.swing.JTextField();
     jLabel3 = new javax.swing.JLabel();
-    jTextNivelPoder = new javax.swing.JTextField();
+    jTextDadoVida = new javax.swing.JTextField();
     jScrollPane1 = new javax.swing.JScrollPane();
     modeloEsquerdo = new DefaultListModel();
     jListEsquerdo = new javax.swing.JList<>();
@@ -64,7 +71,8 @@ private void initComponents() {
     jScrollPane3 = new javax.swing.JScrollPane();
     tbClasses = new javax.swing.JTable();
     jLabel4 = new javax.swing.JLabel();
-
+    jLabel5 = new javax.swing.JLabel();
+    jTextPericia = new javax.swing.JTextField();
     setTitle("Classe");
 
     jLabel2.setText("Nome");
@@ -121,14 +129,17 @@ private void initComponents() {
         }
     });
 
-    tbClasses.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                    "Nome", "Nível de Poder", "Domínios"
-            }
+    tbClasses.setModel(new DefaultTableModel(
+    	new Object[][] {
+    	},
+    	new String[] {
+    		"Nome", "Dado de Vida", "Pontos Pericia", "Tend\u00EAncias"
+    	}
     ));
+    tbClasses.getColumnModel().getColumn(0).setPreferredWidth(55);
+    tbClasses.getColumnModel().getColumn(1).setPreferredWidth(70);
+    tbClasses.getColumnModel().getColumn(2).setPreferredWidth(74);
+    tbClasses.getColumnModel().getColumn(3).setPreferredWidth(124);
     tbClasses.addMouseListener(new java.awt.event.MouseAdapter() {
         public void mouseClicked(java.awt.event.MouseEvent evt) {
             tbClassesMouseClicked(evt);
@@ -137,6 +148,10 @@ private void initComponents() {
     jScrollPane3.setViewportView(tbClasses);
 
     jLabel4.setText("Tendências");
+    
+    jLabel5.setText("Pts Perícia");
+    
+    //jTextPericia.setColumns(10);
 
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     layout.setHorizontalGroup(
@@ -145,27 +160,34 @@ private void initComponents() {
     			.addContainerGap()
     			.addGroup(layout.createParallelGroup(Alignment.LEADING)
     				.addGroup(layout.createSequentialGroup()
-    					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
-    					.addPreferredGap(ComponentPlacement.RELATED)
-    					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-    						.addComponent(jBDireita)
-    						.addComponent(jBEsquerda, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-    					.addPreferredGap(ComponentPlacement.RELATED)
-    					.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
-    					.addPreferredGap(ComponentPlacement.RELATED)
-    					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
-    						.addComponent(jBDeletar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-    						.addComponent(jBSalvar, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-    						.addComponent(jBAtualizar)))
-    				.addComponent(jLabel4)
-    				.addGroup(layout.createSequentialGroup()
     					.addComponent(jLabel2)
     					.addPreferredGap(ComponentPlacement.RELATED)
     					.addComponent(jTextNome, GroupLayout.PREFERRED_SIZE, 194, GroupLayout.PREFERRED_SIZE)
     					.addPreferredGap(ComponentPlacement.RELATED)
     					.addComponent(jLabel3)
     					.addPreferredGap(ComponentPlacement.UNRELATED)
-    					.addComponent(jTextNivelPoder, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
+    					.addComponent(jTextDadoVida, GroupLayout.DEFAULT_SIZE, 89, Short.MAX_VALUE))
+    				.addGroup(layout.createSequentialGroup()
+    					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+    						.addGroup(layout.createSequentialGroup()
+    							.addGroup(layout.createParallelGroup(Alignment.TRAILING, false)
+    								.addComponent(jLabel5, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+    								.addComponent(jLabel4, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addComponent(jTextPericia))
+    						.addGroup(layout.createSequentialGroup()
+    							.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 156, GroupLayout.PREFERRED_SIZE)
+    							.addPreferredGap(ComponentPlacement.RELATED)
+    							.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+    								.addComponent(jBDireita)
+    								.addComponent(jBEsquerda, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 142, GroupLayout.PREFERRED_SIZE)
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(layout.createParallelGroup(Alignment.LEADING)
+    						.addComponent(jBDeletar, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+    						.addComponent(jBAtualizar, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)
+    						.addComponent(jBSalvar, GroupLayout.DEFAULT_SIZE, 111, Short.MAX_VALUE)))
     				.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
     			.addContainerGap())
     );
@@ -176,28 +198,35 @@ private void initComponents() {
     			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
     				.addComponent(jLabel2)
     				.addComponent(jTextNome, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-    				.addComponent(jTextNivelPoder, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    				.addComponent(jTextDadoVida, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
     				.addComponent(jLabel3))
+    			.addPreferredGap(ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+    			.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+    				.addComponent(jLabel5)
+    				.addComponent(jTextPericia, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
     			.addPreferredGap(ComponentPlacement.RELATED)
-    			.addComponent(jLabel4)
-    			.addPreferredGap(ComponentPlacement.RELATED)
-    			.addGroup(layout.createParallelGroup(Alignment.LEADING)
-    				.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    			.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+    				.addGroup(layout.createSequentialGroup()
+    					.addComponent(jBDireita)
+    					.addPreferredGap(ComponentPlacement.RELATED)
+    					.addComponent(jBEsquerda, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+    					.addGap(30))
     				.addGroup(layout.createSequentialGroup()
     					.addComponent(jBSalvar)
     					.addPreferredGap(ComponentPlacement.RELATED)
     					.addComponent(jBAtualizar)
-    					.addPreferredGap(ComponentPlacement.RELATED)
-    					.addComponent(jBDeletar))
-    				.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
+    					.addPreferredGap(ComponentPlacement.UNRELATED)
+    					.addComponent(jBDeletar)
+    					.addGap(12))
     				.addGroup(layout.createSequentialGroup()
-    					.addGap(32)
-    					.addComponent(jBDireita)
+    					.addComponent(jLabel4)
     					.addPreferredGap(ComponentPlacement.RELATED)
-    					.addComponent(jBEsquerda, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-    			.addPreferredGap(ComponentPlacement.RELATED)
+    					.addGroup(layout.createParallelGroup(Alignment.LEADING, false)
+    						.addComponent(jScrollPane2, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
+    						.addComponent(jScrollPane1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))))
+    			.addGap(12)
     			.addComponent(jScrollPane3, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
-    			.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+    			.addContainerGap())
     );
     getContentPane().setLayout(layout);
 
@@ -229,7 +258,7 @@ private void NaoSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 
 private void SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalvarActionPerformed
     DefaultTableModel model = (DefaultTableModel)tbClasses.getModel();
-    model.addRow(new Object[] {jTextNome.getText(), Integer.parseInt(jTextNivelPoder.getText()), gTendencias});
+    model.addRow(new Object[] {jTextNome.getText(), jTextDadoVida.getText(), Integer.parseInt(jTextPericia.getText()), gTendencias});
 
     //LIMPAR CAMPOS
     gTendencias = new ArrayList();
@@ -238,7 +267,8 @@ private void SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     }
     modeloDireito.removeAllElements();
     jTextNome.setText("");
-    jTextNivelPoder.setText("");
+    jTextDadoVida.setText("");
+    jTextPericia.setText("");
 
     //SALVAR
     classes.clear();
@@ -246,11 +276,11 @@ private void SalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:
     {
         Object Nome = model.getValueAt(i, 0);
         Object DadoVida = model.getValueAt(i, 1);
-        Object Tendencia = model.getValueAt(i, 2);
-        Object PontosPericia = model.getValueAt(i, 3);
+        Object PontosPericia = model.getValueAt(i, 2);
+        Object Tendencia = model.getValueAt(i, 3);
         classes.add(new Classe(Nome.toString(), DadoVida.toString(), (ArrayList)Tendencia, Integer.parseInt(PontosPericia.toString())));
     }
-    Sistema.salvar(Sistema.EnumObjeto.DIVINDADE);
+    Sistema.salvar(Sistema.EnumObjeto.CLASSE);
 }//GEN-LAST:event_SalvarActionPerformed
 
 private void jBDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeletarActionPerformed
@@ -266,7 +296,8 @@ private void jBDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     }
     modeloDireito.removeAllElements();
     jTextNome.setText("");
-    jTextNivelPoder.setText("");
+    jTextDadoVida.setText("");
+    jTextPericia.setText("");
 
     //SALVAR
     classes.clear();
@@ -274,18 +305,19 @@ private void jBDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     {
         Object Nome = model.getValueAt(i, 0);
         Object DadoVida = model.getValueAt(i, 1);
-        Object Tendencia = model.getValueAt(i, 2);
-        Object PontosPericia = model.getValueAt(i, 3);
+        Object PontosPericia = model.getValueAt(i, 2);
+        Object Tendencia = model.getValueAt(i, 3);
         classes.add(new Classe(Nome.toString(), DadoVida.toString(), (ArrayList)Tendencia, Integer.parseInt(PontosPericia.toString())));
     }
-    Sistema.salvar(Sistema.EnumObjeto.DIVINDADE);
+    Sistema.salvar(Sistema.EnumObjeto.CLASSE);
 }//GEN-LAST:event_jBDeletarActionPerformed
 
 private void jBAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAtualizarActionPerformed
     DefaultTableModel model = (DefaultTableModel)tbClasses.getModel();
     model.setValueAt(jTextNome.getText(), tbClasses.getSelectedRow(), 0);
-    model.setValueAt(Integer.parseInt(jTextNivelPoder.getText()), tbClasses.getSelectedRow(), 1);
-    model.setValueAt(gTendencias, tbClasses.getSelectedRow(), 2);
+    model.setValueAt(jTextDadoVida.getText(), tbClasses.getSelectedRow(), 1);
+    model.setValueAt(Integer.parseInt(jTextPericia.getText()), tbClasses.getSelectedRow(), 2);
+    model.setValueAt(gTendencias, tbClasses.getSelectedRow(), 3);
 
     //LIMPAR CAMPOS
     gTendencias = new ArrayList();
@@ -294,7 +326,8 @@ private void jBAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     }
     modeloDireito.removeAllElements();
     jTextNome.setText("");
-    jTextNivelPoder.setText("");
+    jTextDadoVida.setText("");
+    jTextPericia.setText("");
 
     //SALVAR
     classes.clear();
@@ -302,19 +335,20 @@ private void jBAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
     {
         Object Nome = model.getValueAt(i, 0);
         Object DadoVida = model.getValueAt(i, 1);
-        Object Tendencia = model.getValueAt(i, 2);
-        Object PontosPericia = model.getValueAt(i, 3);
+        Object PontosPericia = model.getValueAt(i, 2);
+        Object Tendencia = model.getValueAt(i, 3);
         classes.add(new Classe(Nome.toString(), DadoVida.toString(), (ArrayList)Tendencia, Integer.parseInt(PontosPericia.toString())));
     }
-    Sistema.salvar(Sistema.EnumObjeto.DIVINDADE);
+    Sistema.salvar(Sistema.EnumObjeto.CLASSE);
 }//GEN-LAST:event_jBAtualizarActionPerformed
 
 private void tbClassesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbClassesMouseClicked
     DefaultTableModel model = (DefaultTableModel)tbClasses.getModel();
     jTextNome.setText(model.getValueAt(tbClasses.getSelectedRow(), 0).toString());
-    jTextNivelPoder.setText(model.getValueAt(tbClasses.getSelectedRow(), 1).toString());
+    jTextDadoVida.setText(model.getValueAt(tbClasses.getSelectedRow(), 1).toString());
+    jTextPericia.setText(model.getValueAt(tbClasses.getSelectedRow(), 2).toString());
 
-    Object lTendencias = model.getValueAt(tbClasses.getSelectedRow(), 2);
+    Object lTendencias = model.getValueAt(tbClasses.getSelectedRow(), 3);
     gTendencias.clear();
     modeloDireito.removeAllElements();
     for (Object ld : (ArrayList)lTendencias)
@@ -341,6 +375,7 @@ private javax.swing.JButton jBSalvar;
 private javax.swing.JLabel jLabel2;
 private javax.swing.JLabel jLabel3;
 private javax.swing.JLabel jLabel4;
+private javax.swing.JLabel jLabel5;
 private javax.swing.JList<String> jListDireito;
 private DefaultListModel modeloDireito;
 private javax.swing.JList<String> jListEsquerdo;
@@ -348,8 +383,8 @@ private DefaultListModel modeloEsquerdo;
 private javax.swing.JScrollPane jScrollPane1;
 private javax.swing.JScrollPane jScrollPane2;
 private javax.swing.JScrollPane jScrollPane3;
-private javax.swing.JTextField jTextNivelPoder;
+private javax.swing.JTextField jTextDadoVida;
 private javax.swing.JTextField jTextNome;
+private javax.swing.JTextField jTextPericia;
 private javax.swing.JTable tbClasses;
-// End of variables declaration//GEN-END:variables
 }
