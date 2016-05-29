@@ -1,0 +1,8 @@
+#supress InteliJ Idea files
+.idea/
+*.iml
+C:*
+#supress eclipse
+.classpath
+.project
+out/
